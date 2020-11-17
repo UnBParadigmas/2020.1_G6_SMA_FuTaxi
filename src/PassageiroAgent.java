@@ -5,17 +5,20 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
-import jade.domain.FIPAAgentManagement.DFAgentDeion;
-import jade.domain.FIPAAgentManagement.ServiceDeion;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.gui.DFAgentDscDlg;
 
 public class PassageiroAgent extends Agent {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5028747553588389618L;
+
 	// The title of the book to buy
 	private String localDeDestino;
 	// The list of known seller agents
 	private AID[] motoristasAgents;
-	
-	private PassageiroGui passageiroGui;
 
 	// Put agent initializations here
 	protected void setup() {
@@ -30,15 +33,20 @@ public class PassageiroAgent extends Agent {
 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
 			addBehaviour(new TickerBehaviour(this, 60000) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 4003448980930527834L;
+
 				protected void onTick() {
 					System.out.println("Quero ir para "+localDeDestino);
 					// Update the list of seller agents
-					DFAgentDeion template = new DFAgentDeion();
-					ServiceDeion sd = new ServiceDeion();
+					DFAgentDescription template = new DFAgentDescription();
+					ServiceDescription sd = new ServiceDescription();
 					sd.setType("realizar-viagem");
 					template.addServices(sd);
 					try {
-						DFAgentDeion[] result = DFService.search(myAgent, template); 
+						DFAgentDescription[] result = DFService.search(myAgent, template); 
 						System.out.println("Motoristas encontrados:");
 						motoristasAgents = new AID[result.length];
 						for (int i = 0; i < result.length; ++i) {
@@ -74,6 +82,11 @@ public class PassageiroAgent extends Agent {
 	   agents the target book.
 	 */
 	private class RequestPerformer extends Behaviour {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1254793636787752644L;
+
 		private AID motoristaProximo; // The agent who provides the best offer 
 		private int menorPreco;  // The best offered price
 		private int repliesCnt = 0; // The counter of replies from seller agents

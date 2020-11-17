@@ -10,13 +10,25 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 
 public class MotoristaAgent extends Agent {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3211228974125503848L;
+
 	// The localDeAtuacao of books for sale (maps the title of a book to its price)
 	private Hashtable localDeAtuacao;
+
+	// The GUI by means of which the user can add books in the localDeAtuacao
+	private MotoristaGui motoristaGui;
 
 	// Put agent initializations here
 	protected void setup() {
 		// Create the localDeAtuacao
 		localDeAtuacao = new Hashtable();
+
+		// Create and show the GUI
+		motoristaGui = new MotoristaGui(this);
+		motoristaGui.showGui();
 
 		// Register the book-selling service in the yellow pages
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -48,6 +60,8 @@ public class MotoristaAgent extends Agent {
 		catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
+		// Close the GUI
+		motoristaGui.dispose();
 		// Printout a dismissal message
 		System.out.println("Motorista "+getAID().getName()+" pronto.");
 	}
@@ -59,7 +73,7 @@ public class MotoristaAgent extends Agent {
 		addBehaviour(new OneShotBehaviour() {
 			public void action() {
 				localDeAtuacao.put(local, new Integer(preco));
-				System.out.println("Viagem para " + local+". Preço = "+preco);
+				System.out.println("Viagem para " + local+". Preï¿½o = "+preco);
 			}
 		} );
 	}
@@ -104,7 +118,7 @@ public class MotoristaAgent extends Agent {
 				Integer preco = (Integer) localDeAtuacao.remove(local);
 				if (preco != null) {
 					reply.setPerformative(ACLMessage.INFORM);
-					System.out.println("Viagem para " +local+" realizada. Passageiro"+msg.getSender().getName());
+					System.out.println("Viagem para " +local+" realizada. Passageiro "+msg.getSender().getName());
 				}
 				else {
 					// The requested book has been sold to another buyer in the meanwhile .

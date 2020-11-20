@@ -1,4 +1,4 @@
-# FuTaxi
+# FuTáxi
 
 **Disciplina**: FGA0210 - PARADIGMAS DE PROGRAMAÇÃO - T03 <br>
 **Nro do Grupo**: 06<br>
@@ -13,7 +13,7 @@
 | 16/0016428  |  Paulo Victor de Menezes Lopes |
 
 ## Sobre 
-Trata-se de uma simulação de um ponto de taxi, com a presença dos dois tipos de agentes, o motorista e o passageiro. O passegeiro precisa indicar onde ele está e para onde quer ir, enquanto que o motorista precisa indicar a área onde ele atua e o preço para levar o passageiro até lá. Desta forma, o passageiro calcula se há um motorista que atue no local indicado, e havendo mais de um, opta pelo de menor preço. o motorista então é chamado e parte para a viagem, sendo retirado do ponto de taxi.
+Trata-se de uma simulação de um ponto de táxi, com a presença dos dois tipos de agentes, o motorista e o passageiro. O passegeiro precisa indicar onde ele está e para onde quer ir, enquanto que o motorista precisa indicar a área onde ele atua e o preço para levar o passageiro até lá. Desta forma, o passageiro calcula se há um motorista que atue no local indicado, e havendo mais de um, opta pelo de menor preço. o motorista então é chamado e parte para a viagem, sendo retirado do ponto de táxi.
 
 ## Screenshots
 

@@ -10,27 +10,25 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 
 public class MotoristaAgent extends Agent {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 3211228974125503848L;
 
-	// The localDeAtuacao of books for sale (maps the title of a book to its price)
+	// O localDeAtuacao corresponde as cidades para onde o motorista aceita levar o passageiro
 	private Hashtable localDeAtuacao;
 
-	// The GUI by means of which the user can add books in the localDeAtuacao
+	// motoristaGui corresponde a interface gráfica onde pode-se adicionar os locais de atuação do motorista
 	private MotoristaGui motoristaGui;
 
-	// Put agent initializations here
+	// Inicializa o agente
 	protected void setup() {
-		// Create the localDeAtuacao
+		// Cria o  localDeAtuacao
 		localDeAtuacao = new Hashtable();
 
-		// Create and show the GUI
+		// Cria e mostra a interface gráfica
 		motoristaGui = new MotoristaGui(this);
 		motoristaGui.showGui();
 
-		// Register the book-selling service in the yellow pages
+		// Registra o serviço de taxi nas páginas amarelas
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
@@ -44,30 +42,30 @@ public class MotoristaAgent extends Agent {
 			fe.printStackTrace();
 		}
 
-		// Add the behaviour serving queries from buyer agents
+		// Adiciona o comportamento de oferecer corridas
 		addBehaviour(new OfferRequestsServer());
 
-		// Add the behaviour serving purchase orders from buyer agents
+		// Adiciona o comportamento de realizar a corrida 
 		addBehaviour(new PurchaseOrdersServer());
 	}
 
-	// Put agent clean-up operations here
+	// Operações de eliminar o agente
 	protected void takeDown() {
-		// Deregister from the yellow pages
+		// Remove o agente das páginas amarelas
 		try {
 			DFService.deregister(this);
 		}
 		catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
-		// Close the GUI
+		// Fecha a interface gráfica
 		motoristaGui.dispose();
-		// Printout a dismissal message
-		System.out.println("Motorista "+getAID().getName()+" pronto.");
+		// Imprime mensagem de finalização
+		System.out.println("Motorista "+getAID().getName().split("@")[0]+" pronto.");
 	}
 
 	/**
-     This is invoked by the GUI when the user adds a new book for sale
+     É realizado pela interface quando o usuário adiciona novos locais de atuação
 	 */
 	public void atualizarLocaisDeAtuacao(final String local, final int preco) {
 		addBehaviour(new OneShotBehaviour() {
@@ -83,18 +81,18 @@ public class MotoristaAgent extends Agent {
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
-				// CFP Message received. Process it
+				// Recebeu a mensagem CFP. Processa ela
 				String local = msg.getContent();
 				ACLMessage reply = msg.createReply();
 
 				Integer preco = (Integer) localDeAtuacao.get(local);
 				if (preco != null) {
-					// The requested book is available for sale. Reply with the price
+					// A corrida está pronta para ser realizada, responde com o preço.
 					reply.setPerformative(ACLMessage.PROPOSE);
 					reply.setContent(String.valueOf(preco.intValue()));
 				}
 				else {
-					// The requested book is NOT available for sale.
+					// A corrida não está pronta para ser realizada
 					reply.setPerformative(ACLMessage.REFUSE);
 					reply.setContent("not-available");
 				}
@@ -104,14 +102,14 @@ public class MotoristaAgent extends Agent {
 				block();
 			}
 		}
-	}  // End of inner class OfferRequestsServer
+	}  // Fim da classe interna OfferRequestsServer
 
 	private class PurchaseOrdersServer extends CyclicBehaviour {
 		public void action() {
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
-				// ACCEPT_PROPOSAL Message received. Process it
+				// Recebeu mensagem de aceitação. Processa ela
 				String local = msg.getContent();
 				ACLMessage reply = msg.createReply();
 
@@ -121,7 +119,7 @@ public class MotoristaAgent extends Agent {
 					System.out.println("Viagem para " +local+" realizada. Passageiro "+msg.getSender().getName());
 				}
 				else {
-					// The requested book has been sold to another buyer in the meanwhile .
+					// A corrida foi realizada por outro motorista neste intervalo de tempo.
 					reply.setPerformative(ACLMessage.FAILURE);
 					reply.setContent("not-available");
 				}
@@ -131,5 +129,5 @@ public class MotoristaAgent extends Agent {
 				block();
 			}
 		}
-	}  // End of inner class OfferRequestsServer
+	}  // Fim da classe interna OfferRequestsServer
 }

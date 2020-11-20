@@ -5,9 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 class MotoristaGui extends JFrame {	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 7748742724544470144L;
 
 	private MotoristaAgent myAgent;

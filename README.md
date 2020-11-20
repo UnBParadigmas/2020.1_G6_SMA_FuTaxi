@@ -1,4 +1,4 @@
-# FutUber
+# FuTaxi
 
 **Disciplina**: FGA0210 - PARADIGMAS DE PROGRAMAÇÃO - T03 <br>
 **Nro do Grupo**: 06<br>

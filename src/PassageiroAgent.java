@@ -10,37 +10,33 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.gui.DFAgentDscDlg;
 
 public class PassageiroAgent extends Agent {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -5028747553588389618L;
 
-	// The title of the book to buy
+	// localDeDestino corresponde para onde o passageiro deseja ir
 	private String localDeDestino;
-	// The list of known seller agents
+	// motoristasAgents corresponde aos motoristas presentes no ponto de taxi
 	private AID[] motoristasAgents;
 
-	// Put agent initializations here
+	// Inicializa o agente do passageiro
 	protected void setup() {
-		// Printout a welcome message
-		System.out.println(getAID().getName()+" está pronto para realizar viagem.");
+		// Mostra passageiro pronto para realizar viagem
+		System.out.println(getAID().getName().split("@")[0] + " está pronto para realizar viagem.");
 
-		// Get the title of the book to buy as a start-up argument
+		// Obtém locais de destino dos motoristas disponíveis
 		Object[] args = getArguments();
 		if (args != null && args.length > 0) {
 			localDeDestino = (String) args[0];
 			System.out.println("Quero ir para "+localDeDestino);
 
-			// Add a TickerBehaviour that schedules a request to seller agents every minute
+			// Adiciona comportamento de requisitar uma corrida
 			addBehaviour(new TickerBehaviour(this, 60000) {
-				/**
-				 * 
-				 */
+				
 				private static final long serialVersionUID = 4003448980930527834L;
 
 				protected void onTick() {
 					System.out.println("Quero ir para "+localDeDestino);
-					// Update the list of seller agents
+					// Atualiza lista de motoristas disponíveis
 					DFAgentDescription template = new DFAgentDescription();
 					ServiceDescription sd = new ServiceDescription();
 					sd.setType("realizar-viagem");
@@ -58,75 +54,70 @@ public class PassageiroAgent extends Agent {
 						fe.printStackTrace();
 					}
 
-					// Perform the request
+					// Executa requisição
 					myAgent.addBehaviour(new RequestPerformer());
 				}
 			} );
 		}
 		else {
-			// Make the agent terminate
+			// Mata requisição por falta de dados
 			System.out.println("Destino não informado");
 			doDelete();
 		}
 	}
 
-	// Put agent clean-up operations here
+	// Retira o passageiro da lista de passageiros disponíveis
 	protected void takeDown() {
-		// Printout a dismissal message
-		System.out.println("Passageiro "+getAID().getName()+" realizou viagem.");
+		System.out.println("Passageiro "+getAID().getName().split("@")[0]+" realizou viagem.");
 	}
 
 	/**
-	   Inner class RequestPerformer.
-	   This is the behaviour used by Book-buyer agents to request seller 
-	   agents the target book.
+	 * Comportamento do passageiro
 	 */
 	private class RequestPerformer extends Behaviour {
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = -1254793636787752644L;
 
-		private AID motoristaProximo; // The agent who provides the best offer 
-		private int menorPreco;  // The best offered price
-		private int repliesCnt = 0; // The counter of replies from seller agents
-		private MessageTemplate mt; // The template to receive replies
+		private AID motoristaProximo; // motorista mais próximo 
+		private int menorPreco;  // motorista que oferece o menor preço de viagem
+		private int repliesCnt = 0; // Contador de motoristas com mesmo destino
+		private MessageTemplate mt; // Template de motoristas com mesmo destino
 		private int step = 0;
 
 		public void action() {
 			switch (step) {
 			case 0:
-				// Send the cfp to all sellers
+				// Mensagem cfp
 				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
 				for (int i = 0; i < motoristasAgents.length; ++i) {
 					cfp.addReceiver(motoristasAgents[i]);
 				} 
 				cfp.setContent(localDeDestino);
 				cfp.setConversationId("corrida");
-				cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
+				cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Valor único
 				myAgent.send(cfp);
-				// Prepare the template to get proposals
+				// Prepara o templeta para receber propostas
 				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("corrida"),
 						MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
 				step = 1;
 				break;
 			case 1:
-				// Receive all proposals/refusals from seller agents
+				// Recebe propostas de todos os motoristas
 				ACLMessage reply = myAgent.receive(mt);
 				if (reply != null) {
-					// Reply received
+					// Repete requisições
 					if (reply.getPerformative() == ACLMessage.PROPOSE) {
-						// This is an offer 
+						// Oferta
 						int distancia = Integer.parseInt(reply.getContent());
 						if (motoristaProximo == null || distancia < menorPreco) {
-							// This is the best offer at present
+							// Melhor oferta atual
 							menorPreco = distancia;
 							motoristaProximo = reply.getSender();
 						}
 					}
 					repliesCnt++;
 					if (repliesCnt >= motoristasAgents.length) {
-						// We received all replies
+						// Recebeu todas as requisições
 						step = 2; 
 					}
 				}
@@ -135,25 +126,25 @@ public class PassageiroAgent extends Agent {
 				}
 				break;
 			case 2:
-				// Send the purchase order to the seller that provided the best offer
+				// Pede a corrida para o motorista com o menor preço
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				order.addReceiver(motoristaProximo);
 				order.setContent(localDeDestino);
 				order.setConversationId("corrida");
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
-				// Prepare the template to get the purchase order reply
+				// Prepara o template para receber o pedido de corrida
 				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("corrida"),
 						MessageTemplate.MatchInReplyTo(order.getReplyWith()));
 				step = 3;
 				break;
 			case 3:      
-				// Receive the purchase order reply
+				// Recebe o pedido de corrida
 				reply = myAgent.receive(mt);
 				if (reply != null) {
-					// Purchase order reply received
+					// Pede corrida
 					if (reply.getPerformative() == ACLMessage.INFORM) {
-						// Purchase successful. We can terminate
+						// Corrida aceita, motorista parte para a viagem e sai do ponto de taxi
 						System.out.println("Motorista " +reply.getSender().getName() +" encontrado para " + localDeDestino);
 						System.out.println("Preço = "+ menorPreco);
 						myAgent.doDelete();
@@ -177,5 +168,5 @@ public class PassageiroAgent extends Agent {
 			}
 			return ((step == 2 && motoristaProximo == null) || step == 4);
 		}
-	}  // End of inner class RequestPerformer
+	} 
 }

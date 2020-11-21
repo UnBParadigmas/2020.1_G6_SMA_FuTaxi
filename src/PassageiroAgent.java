@@ -21,7 +21,7 @@ public class PassageiroAgent extends Agent {
 	// Inicializa o agente do passageiro
 	protected void setup() {
 		// Mostra passageiro pronto para realizar viagem
-		System.out.println(getAID().getName().split("@")[0] + " está pronto para realizar viagem.");
+		System.out.println(getAID().getName().split("@")[0] + " esta pronto para realizar viagem.");
 
 		// Obtém locais de destino dos motoristas disponíveis
 		Object[] args = getArguments();
@@ -30,7 +30,7 @@ public class PassageiroAgent extends Agent {
 			System.out.println("Quero ir para "+localDeDestino);
 
 			// Adiciona comportamento de requisitar uma corrida
-			addBehaviour(new TickerBehaviour(this, 60000) {
+			addBehaviour(new TickerBehaviour(this, 10000) {
 				
 				private static final long serialVersionUID = 4003448980930527834L;
 
@@ -47,7 +47,7 @@ public class PassageiroAgent extends Agent {
 						motoristasAgents = new AID[result.length];
 						for (int i = 0; i < result.length; ++i) {
 							motoristasAgents[i] = result[i].getName();
-							System.out.println(motoristasAgents[i].getName());
+							System.out.println(motoristasAgents[i].getName().split("@")[0]);
 						}
 					}
 					catch (FIPAException fe) {
@@ -61,7 +61,7 @@ public class PassageiroAgent extends Agent {
 		}
 		else {
 			// Mata requisição por falta de dados
-			System.out.println("Destino não informado");
+			System.out.println("Destino nao informado");
 			doDelete();
 		}
 	}
@@ -145,12 +145,12 @@ public class PassageiroAgent extends Agent {
 					// Pede corrida
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Corrida aceita, motorista parte para a viagem e sai do ponto de taxi
-						System.out.println("Motorista " +reply.getSender().getName() +" encontrado para " + localDeDestino);
-						System.out.println("Preço = "+ menorPreco);
+						System.out.println("Motorista " +reply.getSender().getName().split("@")[0] +" encontrado para " + localDeDestino);
+						System.out.println("Preco = "+ menorPreco);
 						myAgent.doDelete();
 					}
 					else {
-						System.out.println("Nenhum táxi disponível");
+						System.out.println("Nenhum taxi disponivel");
 					}
 
 					step = 4;
@@ -164,7 +164,7 @@ public class PassageiroAgent extends Agent {
 
 		public boolean done() {
 			if (step == 2 && motoristaProximo == null) {
-				System.out.println("Nenhum táxi disponível para esse local");
+				System.out.println("Nenhum taxi disponivel para esse local");
 			}
 			return ((step == 2 && motoristaProximo == null) || step == 4);
 		}

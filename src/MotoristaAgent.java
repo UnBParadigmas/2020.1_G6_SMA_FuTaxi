@@ -71,7 +71,7 @@ public class MotoristaAgent extends Agent {
 		addBehaviour(new OneShotBehaviour() {
 			public void action() {
 				localDeAtuacao.put(local, new Integer(preco));
-				System.out.println("Viagem para " + local+". Pre�o = "+preco);
+				System.out.println("Viagem para " + local+". Preco = "+preco);
 			}
 		} );
 	}
@@ -116,7 +116,7 @@ public class MotoristaAgent extends Agent {
 				Integer preco = (Integer) localDeAtuacao.remove(local);
 				if (preco != null) {
 					reply.setPerformative(ACLMessage.INFORM);
-					System.out.println("Viagem para " +local+" realizada. Passageiro "+msg.getSender().getName());
+					System.out.println("Viagem para " +local+" realizada. Passageiro "+msg.getSender().getName().split("@")[0]);
 				}
 				else {
 					// A corrida foi realizada por outro motorista neste intervalo de tempo.

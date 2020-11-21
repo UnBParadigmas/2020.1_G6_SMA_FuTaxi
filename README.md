@@ -23,11 +23,11 @@ Interface gráfica:<br>
 Interface do motorista:<br>
 ![Interface do motorista](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/interface_motorista.png)
 
-Interface passageiro:<br>
-![Interface do passageiro](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/interface_passageiro.png)
+Mensagens do passageiro no terminal:<br>
+![Mensagens do passageiro no terminal](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/terminal_passageiro.png)
 
-Mensagens do terminal:<br>
-![Mensagens do terminal](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/mensagem_terminal.png)
+Mensagens do motorista no terminal:<br>
+![Mensagens do motorista no terminal](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/terminal_motorista.png)
 
 ## Instalação 
 **Linguagens**: Java<br>
@@ -43,11 +43,15 @@ Primeiro, há a necessidade de fazer o download do JAVA juntamente com a IDE de 
 
 Tendo qualquer IDE de Java instalada (durante o projeto, foi utilizado o [eclipse](www.eclipse.org)), abra o projeto na IDE e rode usando a função de run configurantion com as seguintes configurações:
 
-IMAGENS DO RUN CONFIGURATION:
+Imagens do run configuration:
 
-Preencha a interface com sua preferência de locais. Segue imagens com exemplos de preenchimentos.
+Configuração do passageiro:<br>
+!Configuração do passageiro](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/config_passageiro.png)
 
-IMAGENS COM PREENCHIMENTO:
+Configuração do motorista:<br>
+!Configuração do motorista](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/config_motorista.png)
+
+Após as configurações, preencha a interface do motorista.
 
 ## Vídeo
 [O video com a explicação de implementação e funcionamento do projeto se encontram aqui](https://www.youtube.com/embed/kRwyy-bqGzE).

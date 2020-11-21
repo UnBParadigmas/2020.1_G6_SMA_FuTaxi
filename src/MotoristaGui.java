@@ -19,10 +19,10 @@ class MotoristaGui extends JFrame {
 		
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(2, 2));
-		p.add(new JLabel("Local de atuação:"));
+		p.add(new JLabel("Local de atuacao:"));
 		localDeAtuacao = new JTextField(15);
 		p.add(localDeAtuacao);
-		p.add(new JLabel("Preço:"));
+		p.add(new JLabel("Preco:"));
 		preco = new JTextField(15);
 		p.add(preco);
 		getContentPane().add(p, BorderLayout.CENTER);

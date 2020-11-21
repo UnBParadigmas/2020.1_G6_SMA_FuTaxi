@@ -54,7 +54,7 @@ Configuração do motorista:<br>
 Após as configurações, preencha a interface do motorista.
 
 ## Vídeo
-[O video com a explicação de implementação e funcionamento do projeto se encontram aqui](https://www.youtube.com/embed/kRwyy-bqGzE).
+[O video com a explicação de implementação e funcionamento do projeto se encontram aqui](https://www.youtube.com/watch?v=j9kAtiHTwQU&ab_channel=PauloVictor).
 
 ## Fontes
 [Exemplo de aplicação do JADE](https://jade.tilab.com/download/jade/). Ao fazer o download do pacote, vem alguns exemplos de aplicação. <br>

@@ -46,10 +46,10 @@ Tendo qualquer IDE de Java instalada (durante o projeto, foi utilizado o [eclips
 Imagens do run configuration:
 
 Configuração do passageiro:<br>
-!Configuração do passageiro](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/config_passageiro.png)
+![Configuração do passageiro](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/config_passageiro.png)
 
 Configuração do motorista:<br>
-!Configuração do motorista](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/config_motorista.png)
+![Configuração do motorista](https://github.com/UnBParadigmas/2020.1_G6_SMA_Uber/blob/master/images/config_motorista.png)
 
 Após as configurações, preencha a interface do motorista.
 
